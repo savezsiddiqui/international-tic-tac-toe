@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br>
 To view the project: https://savezsiddiqui.github.io/international-tic-tac-toe
 
 ## Available Scripts
