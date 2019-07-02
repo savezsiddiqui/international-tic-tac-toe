@@ -33,22 +33,14 @@
   color: white;
 }
 
-.btn{
+.btn, .btn:hover, .btn:focus{
   color: white;
   background: #212121;
   border: 1px solid white;
   margin: 5px;
+  outline: 0;
 }
 
-.btn:hover {
-  color: black;
-  background: white;
-}
-
-.btn:focus {
-  outline: none;
-  color: white;
-}
 
 body {
   background:#212121;
