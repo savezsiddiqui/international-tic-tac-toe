@@ -3,42 +3,37 @@ import ReactDOM from 'react-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import './index.css'
 
-const Square = (props) => {
+const Square = ({ value, onClick, id}) => {
     return (
         <button
+            id={id}
             type="button"
-            onClick={props.onClick}
+            onClick={onClick}
             className="btn btn-default square"
         >
-            {props.value}
+            {value}
         </button>
     )
 }
 
-class Board extends React.Component {
+const Board = (props) => {
 
-    renderSquare(i) {
-        return (<Square
-            value={this.props.squares[i]}
-            onClick={() => this.props.onClick(i)}
-        />)
-    }
-
-    render() {
+    const matrix = props.squares.map((square, i) => {
         return (
-            <div class="btn-group btn-matrix">
-                {this.renderSquare(0)}
-                {this.renderSquare(1)}
-                {this.renderSquare(2)}
-                {this.renderSquare(3)}
-                {this.renderSquare(4)}
-                {this.renderSquare(5)}
-                {this.renderSquare(6)}
-                {this.renderSquare(7)}
-                {this.renderSquare(8)}
-            </div>
+            <Square
+                id={i}
+                key={i}
+                value={props.squares[i]}
+                onClick={() => props.onClick(i)}
+            />
         )
-    }
+    })
+
+    return (
+        <div className="btn-group btn-matrix">
+            {matrix}
+        </div>
+    )
 }
 
 class Game extends React.Component {
@@ -87,7 +82,7 @@ class Game extends React.Component {
             stepNumber: i,
             history: this.state.history.filter((squares, index) =>
                 index < i),
-            xIsNext: this.state.stepNumber % 2 == 0 ? true : false
+            xIsNext: this.state.stepNumber % 2 === 0 ? true : false
         })
     }
 
@@ -99,7 +94,7 @@ class Game extends React.Component {
 
         const movesX = history.map((move, i) => {
             const desc = 'Undo till Move ' + i.toString()
-            if (i % 2 != 0)
+            if (i % 2 !== 0)
                 return (
                     <li key={i}>
                         <Button onClick={() => this.jumpTo(i)} > {desc}</ Button>
@@ -109,7 +104,7 @@ class Game extends React.Component {
 
         const movesO = history.map((move, i) => {
             const desc = 'Undo till Move ' + i.toString()
-            if (i != 0 && i % 2 == 0)
+            if (i !== 0 && i % 2 === 0)
                 return (
                     <li key={i}>
                         <Button onClick={() => this.jumpTo(i)} > {desc}</ Button>
@@ -118,10 +113,10 @@ class Game extends React.Component {
         })
 
         let status;
-        if (winner == 'X' || winner == 'O') {
+        if (winner === 'X' || winner === 'O') {
             status = 'Winner: ' + winner;
         }
-        else if (winner == 'tie') {
+        else if (winner === 'tie') {
             status = 'Draw'
         }
         else {
@@ -159,6 +154,16 @@ class Game extends React.Component {
     }
 }
 
+function highlightWinner(a, b, c) {
+
+    let squares = document.getElementsByClassName('square')
+    for(let square of squares) {
+        if(square.id == a || square.id == b || square.id == c) {
+            square.style.border = '1px solid gold'
+        }
+    }
+}
+
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
@@ -173,7 +178,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            
+            highlightWinner(a, b, c)
             return squares[a];
         }
     }
@@ -181,19 +186,19 @@ function calculateWinner(squares) {
     let tie = true;
 
     for (let i = 0; i < squares.length; i++) {
-        if (squares[i] == null) {
+        if (squares[i] === null) {
             tie = false;
             break;
         }
     }
 
-    if (tie == true)
+    if (tie === true)
         return 'tie'
     else
         return null;
 }
 
-// ========================================
+// ============================================================
 
 ReactDOM.render(
     <Game />,

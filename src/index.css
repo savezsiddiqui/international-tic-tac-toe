@@ -45,6 +45,11 @@
   background: white;
 }
 
+.btn:focus {
+  outline: none;
+  color: white;
+}
+
 body {
   background:#212121;
   color: white;
